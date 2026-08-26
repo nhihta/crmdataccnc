@@ -12,7 +12,7 @@
     background: #f8fafc;
     color: #1e293b;
   }
-  .app { max-width: 720px; margin: 0 auto; padding: 20px 14px; }
+  .app { width: min(96vw, 1600px); max-width: 1600px; margin: 0 auto; padding: 20px 14px; }
   .card {
     background: rgba(240, 249, 255, 0.6);
     border: 1px solid #e0f2fe;
@@ -64,7 +64,7 @@
   }
   .lead-table {
     width: 100%;
-    min-width: 1180px;
+    min-width: 1380px;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 12px;
@@ -101,6 +101,48 @@
   .lead-table .cell-zalo { min-width: 75px; text-align: center; }
   .lead-table .table-badge { display: inline-block; }
   .table-empty { padding: 40px 20px; text-align: center; color: #94a3b8; font-size: 14px; }
+
+  .lead-table td.editable-cell {
+    cursor: text;
+  }
+  .lead-table td.editable-cell:hover {
+    background: #eff6ff;
+  }
+  .lead-table td.editing {
+    padding: 4px 6px;
+    background: #eff6ff;
+    box-shadow: inset 0 0 0 2px #60a5fa;
+  }
+  .table-edit-input,
+  .table-edit-select,
+  .table-edit-textarea {
+    width: 100%;
+    min-width: 110px;
+    border: 1px solid #93c5fd;
+    border-radius: 6px;
+    background: #fff;
+    color: #1e293b;
+    font: inherit;
+    padding: 6px 7px;
+    outline: none;
+  }
+  .table-edit-textarea {
+    min-width: 220px;
+    min-height: 68px;
+    resize: vertical;
+    line-height: 1.4;
+  }
+  .table-edit-check {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  .table-edit-hint {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: 4px;
+    white-space: nowrap;
+  }
 
   .error-banner { padding: 8px 20px; background: #fef2f2; color: #b91c1c; font-size: 12px; border-bottom: 1px solid #fee2e2; }
 
@@ -194,7 +236,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const SEED_LEADS = [{"id": "seed-1", "stt": 1, "name": "Anh Khoa", "time": "2026-08-01T07:34:00", "phone": "363733471", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-2", "stt": 2, "name": "Cửa Sắt Xuân Nam", "time": "2026-08-01T21:36:00", "phone": "948776008", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-3", "stt": 3, "name": "Nguyễn Minh Hải", "time": "2026-08-02T21:08:00", "phone": "904192175", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-4", "stt": 4, "name": "Thu Phung", "time": "2026-08-02T21:29:00", "phone": "917105125", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-5", "stt": 5, "name": "Phạm Ngọc Bảo Duy", "time": "2026-08-03T07:16:00", "phone": "909904866", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-6", "stt": 6, "name": "Ngoc Mai Nguyen", "time": "2026-08-03T10:23:00", "phone": "972123387", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-7", "stt": 7, "name": "trọng thưởng", "time": "2026-08-03T11:00:00", "phone": "944827846", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-8", "stt": 8, "name": "Đỗ Bang Bang", "time": "2026-08-03T12:48:00", "phone": "865232436", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-9", "stt": 9, "name": "Thuan Tran", "time": "2026-08-04T11:32:00", "phone": "374663818", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-10", "stt": 10, "name": "Vật Tư Quang Quyên", "time": "2026-08-04T12:00:00", "phone": "389992196", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-11", "stt": 11, "name": "Lương Bảo Quốc", "time": "2026-08-04T12:00:00", "phone": "984629002", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-12", "stt": 12, "name": "Duy Nguyễn", "time": "2026-08-04T23:08:00", "phone": "336989129", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-13", "stt": 13, "name": "Lê Thanh Sơn", "time": "2026-08-05T10:27:00", "phone": "972686636", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-14", "stt": 14, "name": "Phạm Đồng", "time": "2026-08-05T14:38:00", "phone": "965288798", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-15", "stt": 15, "name": "Khoa Tu Phung", "time": "2026-08-05T16:07:00", "phone": "912140302", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-16", "stt": 16, "name": "Nguyen Long", "time": "2026-08-05T20:01:00", "phone": "359722895", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-17", "stt": 17, "name": "Tran Van", "time": "2026-08-05T20:30:00", "phone": "902562586", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-18", "stt": 18, "name": "Thong Tranvan", "time": "2026-08-06T08:27:00", "phone": "974662704", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-19", "stt": 19, "name": "Trương Nhất Vinh", "time": "2026-08-06T11:18:00", "phone": "846840840", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-20", "stt": 20, "name": "Lò Văn Thành", "time": "2026-08-06T20:38:00", "phone": "941213876", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-21", "stt": 21, "name": "Dương Cao", "time": "2026-08-07T08:30:00", "phone": "989668962", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-22", "stt": 22, "name": "Trà Phương", "time": "2026-08-07T23:03:00", "phone": "335650939", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-23", "stt": 23, "name": "Hoan Minh", "time": "2026-08-07T23:12:00", "phone": "916413388", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-24", "stt": 24, "name": "Tuấn Anh Jeryy", "time": "2026-08-08T07:50:00", "phone": "368244581", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-25", "stt": 25, "name": "Nguyễn Hoàng Minh", "time": "2026-08-09T07:17:00", "phone": "931809081", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-26", "stt": 26, "name": "Thắng Trũi", "time": "2026-08-09T11:07:00", "phone": "912063810", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-27", "stt": 27, "name": "Trần Quang Minh", "time": "2026-08-09T19:09:00", "phone": "903953494", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-28", "stt": 28, "name": "Bùi Mạnh Quyết", "time": "2026-08-10T09:11:00", "phone": "946427163", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-29", "stt": 29, "name": "Thanh Viet Pc", "time": "2026-08-10T14:32:00", "phone": "766727703", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-30", "stt": 30, "name": "Trương Thu Thuỷ", "time": "2026-08-10T16:54:00", "phone": "967873135", "callNote": "nhà chị 100% chính ngạch, nhập máy móc, kết nối Zalo chị. Đơn vừa rồi đi bên khác, đơn tới chị đi bên em. Kết nối Zalo chị", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-31", "stt": 31, "name": "Chu Sơn", "time": "2026-08-10T19:56:00", "phone": "979390258", "callNote": "ồn quá ko nghe đc Zalo mình", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-32", "stt": 32, "name": "Linh Linh Nhi", "time": "2026-08-10T21:23:00", "phone": "775812280", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-33", "stt": 33, "name": "Vu Nguyen", "time": "2026-08-11T00:00:00", "phone": "386128158", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-34", "stt": 34, "name": "Đàm bảo châu", "time": "2026-08-11T00:00:00", "phone": "908074123", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-35", "stt": 35, "name": "Hoàng Long", "time": "2026-08-11T00:00:00", "phone": "798517665", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-36", "stt": 36, "name": "Phạm Công", "time": "2026-08-11T00:00:00", "phone": "968179578", "callNote": "Đi xăm xe đạp, chuyên tiểu ngạch, tháng 8 hoặc tháng 9 sẽ mở HKD. xăm xe đạp mỗi lần 2 tấn, cân nhắc \n", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-37", "stt": 37, "name": "\nVivi An", "time": "2026-08-11T00:00:00", "phone": "877700680", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-38", "stt": 38, "name": "Nguyễn Tiến Sỹ", "time": "2026-08-11T00:00:00", "phone": "943501090", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-39", "stt": 39, "name": "Trần Thị Yến", "time": "2026-08-11T00:00:00", "phone": "944966066", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-40", "stt": 40, "name": "Nguyen Van Luom", "time": "2026-08-12T00:00:00", "phone": "942776678", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-41", "stt": 41, "name": "Trần Đức Quang", "time": "2026-08-12T00:00:00", "phone": "389713273", "callNote": "ok tiềm năng - chuẩn bị gửi đơn về- kí gửi", "zalo": false, "revenue": null, "note": "tạo mã khách CA087", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-42", "stt": 42, "name": "Phuc Tran", "time": "2026-08-12T00:00:00", "phone": "828886695", "callNote": "OK Ttiềm năng, có sản lượng, khai thác thêm", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-43", "stt": 43, "name": "Diện Đỗ Văn", "time": "2026-08-12T00:00:00", "phone": "963817039", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-44", "stt": 44, "name": "hoanh luong", "time": "2026-08-12T00:00:00", "phone": "903120461", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-45", "stt": 45, "name": "Dũng Nguyễn", "time": "2026-08-13T00:00:00", "phone": "974373284", "callNote": "Cần nhập thuyền kayak. Đang báo giá", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-46", "stt": 46, "name": "Hoang Lương", "time": "2026-08-13T00:00:00", "phone": "903120461", "callNote": "knmx2", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-47", "stt": 47, "name": "Quỳnh Như", "time": "2026-08-13T00:00:00", "phone": "866617842", "callNote": "Knm x3/ lỗi kết nối", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-48", "stt": 48, "name": "Vật Tư Đá DC", "time": "2026-08-14T00:00:00", "phone": "949817599", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-49", "stt": 49, "name": "Vũ Bá", "time": "2026-08-14T00:00:00", "phone": "986474338", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-50", "stt": 50, "name": "N.L.T Hoàng Hải", "time": "2026-08-14T00:00:00", "phone": "376755111", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-51", "stt": 51, "name": "Nguyễn Văn Lương", "time": "2026-08-14T00:00:00", "phone": null, "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-52", "stt": 52, "name": "Thanh Thu", "time": "2026-08-14T00:00:00", "phone": "852000123", "callNote": "nhập đồ nail 20-30kg/ lần. Em kb Zalo trao đổi, check xem đi được chính ngạch k, trước giờ chỉ tiểu ngạch", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-53", "stt": 53, "name": "Nguyễn Đăng Hiến", "time": "2026-08-14T00:00:00", "phone": "926885885", "callNote": "tiềm năng, nhập hàng kim khí - máy móc,vẫn dang đi chíng ngạch", "zalo": false, "revenue": null, "note": "Thuỳ Dương care", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-54", "stt": 54, "name": "Phan Giáp Hải", "time": "2026-08-14T00:00:00", "phone": "703552553", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-55", "stt": 55, "name": "Huan Bui", "time": "2026-08-14T00:00:00", "phone": "368851118", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-56", "stt": 56, "name": "Huu An Ta", "time": "2026-08-14T00:00:00", "phone": "974682779", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-57", "stt": 57, "name": "Minh Cao (nhập hàng HCM), chú ý có thể đường biển", "time": "2026-08-14T00:00:00", "phone": "385830284", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-58", "stt": 58, "name": "Thanh Nguyen", "time": "2026-08-15T00:00:00", "phone": "988737189", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-59", "stt": 59, "name": "Thu Phuong", "time": "2026-08-15T00:00:00", "phone": "917105125", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-60", "stt": 60, "name": "e liên hệ qua zalo Nhim Thuong", "time": "2026-08-15T00:00:00", "phone": "982250966", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-61", "stt": 61, "name": "Như Quỳnh", "time": "2026-08-16T00:00:00", "phone": "866617842", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-62", "stt": 62, "name": "Như Quỳnh", "time": "2026-08-16T00:00:00", "phone": "911807268", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-63", "stt": 63, "name": "Trần Ngọc Hoàn", "time": "2026-08-16T00:00:00", "phone": "945531083", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-64", "stt": 64, "name": "Bình Bé Bỏng", "time": "2026-08-16T00:00:00", "phone": "984474159", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-65", "stt": 65, "name": "Trần Thành Vũ", "time": "2026-08-16T00:00:00", "phone": "979821316", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-66", "stt": 66, "name": "Phong Nguyen Hung", "time": "2026-08-17T00:00:00", "phone": "942310879", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-67", "stt": 67, "name": "Tấn Phát", "time": "2026-08-17T00:00:00", "phone": "909510996", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-68", "stt": 68, "name": "Phạm Gia Khánh", "time": "2026-08-17T00:00:00", "phone": "977382521", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-69", "stt": 69, "name": "\nZalo cho a", "time": "2026-08-17T00:00:00", "phone": "979162386", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-70", "stt": 70, "name": "Gia Hân", "time": "2026-08-18T00:00:00", "phone": "903361518", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-71", "stt": 71, "name": "Duy Thái", "time": "2026-08-18T00:00:00", "phone": "357577989", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-72", "stt": 72, "name": "Hiệp Hiệp", "time": "2026-08-19T00:00:00", "phone": "972069410", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-73", "stt": 73, "name": "Nguyễn Đức Thinh", "time": "2026-08-19T00:00:00", "phone": null, "callNote": "Dể lại QR zalo", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-74", "stt": 74, "name": "Nguyễn Quốc Huy", "time": "2026-08-19T00:00:00", "phone": "915279279", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-75", "stt": 75, "name": "Duc Trinh", "time": "2026-08-20T00:00:00", "phone": "933387277", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-76", "stt": 76, "name": "Đào Thiện Tâm", "time": "2026-08-20T00:00:00", "phone": "777852481", "callNote": "ok", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-77", "stt": 77, "name": "Justice Tran", "time": "2026-08-20T00:00:00", "phone": "963914455", "callNote": "bận, gls", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-78", "stt": 78, "name": "Trúc Ngân", "time": "2026-08-20T00:00:00", "phone": "979791708", "callNote": "ok", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-79", "stt": 79, "name": "Kien Phố Phủ", "time": "2026-08-20T00:00:00", "phone": "339112661", "callNote": "đang bận, lúc khác gọi lại ", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-80", "stt": 80, "name": "Danh Nguyễn", "time": "2026-08-20T00:00:00", "phone": "799339588", "callNote": "liên hệ zalo đi", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-81", "stt": 81, "name": "Dieu Tran", "time": "2026-08-20T00:00:00", "phone": "395200167", "callNote": "máy bận", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-82", "stt": 82, "name": "Nguyen Huu Nam Binh", "time": "2026-08-20T00:00:00", "phone": "328762792", "callNote": "máy bận", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-83", "stt": 83, "name": "Thanh Ngan", "time": "2026-08-21T00:00:00", "phone": "939862895", "callNote": "máy bận", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-84", "stt": 84, "name": "Minhman Le", "time": "2026-08-21T00:00:00", "phone": "903957147", "callNote": "thuê bao", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-85", "stt": 85, "name": "Về Đâu", "time": "2026-08-22T00:00:00", "phone": "988492614", "callNote": "đang chạy xe xíu gọi lại nha", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-86", "stt": 86, "name": "Trần Thành Vũ", "time": "2026-08-22T00:00:00", "phone": "961442475", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-87", "stt": 87, "name": "\nTiến Đức", "time": "2026-08-22T00:00:00", "phone": "973884262", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-88", "stt": 88, "name": "Johnny Pham", "time": "2026-08-22T00:00:00", "phone": "974384950", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-89", "stt": 89, "name": "Thương Tôn Thất", "time": "2026-08-22T00:00:00", "phone": "763737273", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-90", "stt": 90, "name": "Về đâu", "time": "2026-08-23T00:00:00", "phone": "988492614", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-91", "stt": 91, "name": "Johnny Pham", "time": "2026-08-23T00:00:00", "phone": "974384950", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-92", "stt": 92, "name": "Thương Tôn Thất", "time": "2026-08-23T00:00:00", "phone": "763737273", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-93", "stt": 93, "name": "Trần Phương Thy", "time": "2026-08-23T00:00:00", "phone": "969799221", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-94", "stt": 94, "name": "Tuan Dang Duy", "time": "2026-08-23T00:00:00", "phone": "946838692", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-95", "stt": 95, "name": "Hạnh Trần", "time": "2026-08-23T00:00:00", "phone": "982955463", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-96", "stt": 96, "name": "Bảo An", "time": "2026-08-24T00:00:00", "phone": "376702022", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-97", "stt": 97, "name": "Ly Nguyễn", "time": "2026-08-24T00:00:00", "phone": "394571997", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-98", "stt": 98, "name": "Chung Ngọc Lới", "time": "2026-08-24T00:00:00", "phone": "982584748", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-99", "stt": 99, "name": "Kiến Mận Đỗ", "time": "2026-08-24T00:00:00", "phone": "398072903", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-100", "stt": 100, "name": "Quinie Cai", "time": "2026-08-24T00:00:00", "phone": null, "callNote": "Khách này xin số zalo bên mình", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "contacted", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-101", "stt": 101, "name": "Cuong Nguyenquoc", "time": "2026-08-24T00:00:00", "phone": "944677789", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-102", "stt": 102, "name": "Tran Bao Nguyen", "time": "2026-08-25T00:00:00", "phone": "942569579", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-103", "stt": 103, "name": "Minh Sang", "time": "2026-08-25T00:00:00", "phone": "913507800", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}, {"id": "seed-104", "stt": 104, "name": "Dương Bảo Trung", "time": "2026-08-25T00:00:00", "phone": "819313862", "callNote": "", "zalo": false, "revenue": null, "note": "", "assignee": "Chưa phân công", "stage": "new", "notPotentialReason": "", "firstContactAt": null, "updatedAt": null}];
 
-const ASSIGNEES = ["Chưa phân công", "Quang", "Hương", "Ngân", "Nhi"];
+const ASSIGNEES = ["Chưa phân công", "Quang", "Hương", "Ngân", "Nhi", "Huyen Pham", "Nguyen Anh"];
 const STALE_POTENTIAL_HOURS = 72;
 
 const NOT_POTENTIAL_REASONS = [
@@ -629,17 +671,17 @@ function renderTable(leads) {
     const badgeClass = st === "overdue" ? "badge-overdue" : "badge-" + lead.stage;
     const badgeLabel = st === "overdue" ? "Trễ hạn" : STAGE_LABELS[lead.stage];
 
-    return '<tr>' +
+    return '<tr data-lead-id="' + escapeHtml(lead.id) + '">' +
       '<td class="cell-stt">' + escapeHtml(lead.stt || "") + '</td>' +
       '<td class="cell-date">' + escapeHtml(fmtFullDateTime(lead.time)) + '</td>' +
-      '<td class="cell-name">' + escapeHtml(String(lead.name || "").trim()) + '</td>' +
-      '<td class="cell-phone">' + escapeHtml(normalizePhone(lead.phone) || "—") + '</td>' +
-      '<td><span class="badge table-badge ' + badgeClass + '">' + escapeHtml(badgeLabel) + '</span></td>' +
-      '<td class="cell-assignee">' + escapeHtml(lead.assignee || "Chưa phân công") + '</td>' +
-      '<td class="cell-zalo">' + (lead.zalo ? "✓" : "—") + '</td>' +
-      '<td class="cell-revenue">' + escapeHtml(lead.revenue || "—") + '</td>' +
-      '<td class="cell-note">' + escapeHtml(lead.callNote || "—") + '</td>' +
-      '<td class="cell-note">' + escapeHtml(lead.note || "—") + '</td>' +
+      '<td class="cell-name editable-cell" data-edit-field="name" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(String(lead.name || "").trim()) + '</td>' +
+      '<td class="cell-phone editable-cell" data-edit-field="phone" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(normalizePhone(lead.phone) || "—") + '</td>' +
+      '<td class="editable-cell" data-edit-field="stage" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa"><span class="badge table-badge ' + badgeClass + '">' + escapeHtml(badgeLabel) + '</span></td>' +
+      '<td class="cell-assignee editable-cell" data-edit-field="assignee" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(lead.assignee || "Chưa phân công") + '</td>' +
+      '<td class="cell-zalo editable-cell" data-edit-field="zalo" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + (lead.zalo ? "✓" : "—") + '</td>' +
+      '<td class="cell-revenue editable-cell" data-edit-field="revenue" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(lead.revenue || "—") + '</td>' +
+      '<td class="cell-note editable-cell" data-edit-field="callNote" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(lead.callNote || "—") + '</td>' +
+      '<td class="cell-note editable-cell" data-edit-field="note" data-lead-id="' + escapeHtml(lead.id) + '" title="Double-click để sửa">' + escapeHtml(lead.note || "—") + '</td>' +
       '<td class="cell-date">' + escapeHtml(fmtFullDateTime(lead.updatedAt)) + '</td>' +
     '</tr>';
   }).join("");
@@ -662,6 +704,118 @@ function renderTable(leads) {
       '<tbody>' + rows + '</tbody>' +
     '</table>' +
   '</div>';
+}
+
+function startTableEdit(cell) {
+  if (!cell || cell.classList.contains("editing")) return;
+
+  const id = cell.dataset.leadId;
+  const field = cell.dataset.editField;
+  const lead = state.leads.find((l) => l.id === id);
+  if (!lead || !field) return;
+
+  const originalHtml = cell.innerHTML;
+  const originalValue = lead[field];
+
+  cell.classList.add("editing");
+
+  let editor;
+
+  if (field === "stage") {
+    editor = document.createElement("select");
+    editor.className = "table-edit-select";
+    ["new", "contacted", "potential", "not_potential"].forEach((key) => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = STAGE_LABELS[key];
+      opt.selected = lead.stage === key;
+      editor.appendChild(opt);
+    });
+  } else if (field === "assignee") {
+    editor = document.createElement("select");
+    editor.className = "table-edit-select";
+    ASSIGNEES.forEach((name) => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      opt.selected = (lead.assignee || "Chưa phân công") === name;
+      editor.appendChild(opt);
+    });
+  } else if (field === "zalo") {
+    editor = document.createElement("input");
+    editor.type = "checkbox";
+    editor.className = "table-edit-check";
+    editor.checked = !!lead.zalo;
+  } else if (field === "callNote" || field === "note") {
+    editor = document.createElement("textarea");
+    editor.className = "table-edit-textarea";
+    editor.value = lead[field] || "";
+  } else {
+    editor = document.createElement("input");
+    editor.type = "text";
+    editor.className = "table-edit-input";
+    editor.value = lead[field] == null ? "" : String(lead[field]);
+  }
+
+  cell.innerHTML = "";
+  cell.appendChild(editor);
+  editor.focus();
+
+  if (editor.select && field !== "stage" && field !== "assignee") {
+    try { editor.select(); } catch (e) {}
+  }
+
+  let finished = false;
+
+  const finish = async (save) => {
+    if (finished) return;
+    finished = true;
+
+    if (!save) {
+      cell.classList.remove("editing");
+      cell.innerHTML = originalHtml;
+      return;
+    }
+
+    let value;
+    if (field === "zalo") {
+      value = !!editor.checked;
+    } else {
+      value = editor.value;
+    }
+
+    if (field === "name" && !String(value).trim()) {
+      value = originalValue;
+    }
+
+    cell.classList.remove("editing");
+
+    // updateLead sẽ render lại bảng và lưu Supabase.
+    await updateLead(id, { [field]: value });
+  };
+
+  editor.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      finish(false);
+    } else if (e.key === "Enter" && field !== "callNote" && field !== "note") {
+      e.preventDefault();
+      finish(true);
+    } else if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && (field === "callNote" || field === "note")) {
+      e.preventDefault();
+      finish(true);
+    }
+  });
+
+  editor.addEventListener("change", () => {
+    if (field === "stage" || field === "assignee" || field === "zalo") {
+      finish(true);
+    }
+  });
+
+  editor.addEventListener("blur", () => {
+    setTimeout(() => finish(true), 0);
+  });
 }
 
 function render() {
@@ -813,6 +967,13 @@ document.addEventListener("click", (e) => {
   else if (action === "open-add-modal") { state.showAddModal = true; render(); }
   else if (action === "close-add-modal") { state.showAddModal = false; render(); }
   else if (action === "submit-add") { addLead(); }
+});
+
+document.addEventListener("dblclick", (e) => {
+  const cell = e.target.closest("td[data-edit-field][data-lead-id]");
+  if (!cell || state.viewMode !== "table") return;
+  e.preventDefault();
+  startTableEdit(cell);
 });
 
 document.addEventListener("change", (e) => {
