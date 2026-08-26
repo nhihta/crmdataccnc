@@ -102,11 +102,27 @@
   .lead-table .table-badge { display: inline-block; }
   .table-empty { padding: 40px 20px; text-align: center; color: #94a3b8; font-size: 14px; }
 
+  .edit-hint-bar {
+    background: #fff;
+    border-bottom: 1px solid #e0f2fe;
+    padding: 5px 20px 4px;
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: left;
+  }
+
   .lead-table td.editable-cell {
     cursor: text;
+    transition: background 0.12s ease, box-shadow 0.12s ease;
   }
   .lead-table td.editable-cell:hover {
     background: #eff6ff;
+    box-shadow: inset 0 0 0 1px #bfdbfe;
+  }
+  .lead-table td[data-edit-field="stage"],
+  .lead-table td[data-edit-field="assignee"],
+  .lead-table td[data-edit-field="zalo"] {
+    cursor: pointer;
   }
   .lead-table td.editing {
     padding: 4px 6px;
@@ -292,7 +308,7 @@ let state = {
   showAddModal: false,
   newLead: { name: "", phone: "", assignee: "Chưa phân công" },
   error: "",
-  viewMode: "list",
+  viewMode: (window.matchMedia && window.matchMedia("(max-width: 767px)").matches) ? "list" : "table",
 };
 
 function normalizePhone(p) {
@@ -867,6 +883,7 @@ function render() {
       '<p class="insight-line">Trong số khách đã đánh giá, <b>' + stats.potentialRate + "%</b> là tiềm năng (" + stats.potential + "/" + stats.judged + ").</p>" +
       staleBanner +
     "</div>" +
+    '<div class="edit-hint-bar">Double click để chỉnh sửa thông tin</div>' +
     '<div class="toolbar">' +
       '<div class="tabs">' + tabs + "</div>" +
       '<div class="search-wrap">' + icon("search", 14) + '<input class="search-input" id="search-input" placeholder="Tìm tên hoặc số điện thoại" value="' + escapeHtml(state.query) + '" /></div>' +
