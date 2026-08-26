@@ -49,6 +49,58 @@
   select { font-size: 12px; padding: 8px 8px; border-radius: 8px; border: 1px solid #bae6fd; background: #fff; color: #475569; }
   .btn-primary { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; background: #2563eb; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
   .btn-primary:hover { background: #1d4ed8; }
+  .btn-view {
+    display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+    background: #fff; color: #1d4ed8; border: 1px solid #93c5fd;
+    padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+  }
+  .btn-view:hover { background: #eff6ff; }
+  .btn-view.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+
+  .table-wrap {
+    background: #fff;
+    max-height: 560px;
+    overflow: auto;
+  }
+  .lead-table {
+    width: 100%;
+    min-width: 1180px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+  }
+  .lead-table th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    text-align: left;
+    padding: 10px 9px;
+    border-bottom: 1px solid #dbeafe;
+    white-space: nowrap;
+  }
+  .lead-table td {
+    padding: 9px;
+    border-bottom: 1px solid #f0f9ff;
+    vertical-align: top;
+    color: #475569;
+  }
+  .lead-table tbody tr:hover { background: #f8fbff; }
+  .lead-table .cell-stt { width: 48px; text-align: center; color: #94a3b8; }
+  .lead-table .cell-name { min-width: 170px; max-width: 230px; font-weight: 600; color: #1e293b; }
+  .lead-table .cell-phone { min-width: 115px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .lead-table .cell-date { min-width: 115px; white-space: nowrap; }
+  .lead-table .cell-assignee { min-width: 115px; }
+  .lead-table .cell-note { min-width: 220px; max-width: 320px; white-space: normal; line-height: 1.45; }
+  .lead-table .cell-revenue { min-width: 120px; }
+  .lead-table .cell-zalo { min-width: 75px; text-align: center; }
+  .lead-table .table-badge { display: inline-block; }
+  .table-empty { padding: 40px 20px; text-align: center; color: #94a3b8; font-size: 14px; }
 
   .error-banner { padding: 8px 20px; background: #fef2f2; color: #b91c1c; font-size: 12px; border-bottom: 1px solid #fee2e2; }
 
@@ -176,6 +228,8 @@ const ICONS = {
   thumbsup: '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/>',
   thumbsdown: '<path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"/>',
   circledashed: '<path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7M21.82 10.1a9.93 9.93 0 0 1 0 3.8M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69M13.9 21.82a9.94 9.94 0 0 1-3.8 0M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7M2.18 13.9a9.93 9.93 0 0 1 0-3.8M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"/>',
+  table: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+  list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
   loader: '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>',
 };
 function icon(name, size, extra) {
@@ -196,6 +250,7 @@ let state = {
   showAddModal: false,
   newLead: { name: "", phone: "", assignee: "Chưa phân công" },
   error: "",
+  viewMode: "list",
 };
 
 function normalizePhone(p) {
@@ -554,8 +609,69 @@ function renderRow(lead) {
   "</div>";
 }
 
+
+function fmtFullDateTime(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return d.toLocaleString("vi-VN", {
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function renderTable(leads) {
+  if (!leads.length) {
+    return '<div class="table-wrap"><div class="table-empty">Không có khách nào khớp bộ lọc.</div></div>';
+  }
+
+  const rows = leads.map((lead) => {
+    const st = statusOf(lead, state.now, state.thresholdHours);
+    const badgeClass = st === "overdue" ? "badge-overdue" : "badge-" + lead.stage;
+    const badgeLabel = st === "overdue" ? "Trễ hạn" : STAGE_LABELS[lead.stage];
+
+    return '<tr>' +
+      '<td class="cell-stt">' + escapeHtml(lead.stt || "") + '</td>' +
+      '<td class="cell-date">' + escapeHtml(fmtFullDateTime(lead.time)) + '</td>' +
+      '<td class="cell-name">' + escapeHtml(String(lead.name || "").trim()) + '</td>' +
+      '<td class="cell-phone">' + escapeHtml(normalizePhone(lead.phone) || "—") + '</td>' +
+      '<td><span class="badge table-badge ' + badgeClass + '">' + escapeHtml(badgeLabel) + '</span></td>' +
+      '<td class="cell-assignee">' + escapeHtml(lead.assignee || "Chưa phân công") + '</td>' +
+      '<td class="cell-zalo">' + (lead.zalo ? "✓" : "—") + '</td>' +
+      '<td class="cell-revenue">' + escapeHtml(lead.revenue || "—") + '</td>' +
+      '<td class="cell-note">' + escapeHtml(lead.callNote || "—") + '</td>' +
+      '<td class="cell-note">' + escapeHtml(lead.note || "—") + '</td>' +
+      '<td class="cell-date">' + escapeHtml(fmtFullDateTime(lead.updatedAt)) + '</td>' +
+    '</tr>';
+  }).join("");
+
+  return '<div class="table-wrap">' +
+    '<table class="lead-table">' +
+      '<thead><tr>' +
+        '<th>STT</th>' +
+        '<th>Ngày nhận</th>' +
+        '<th>Khách hàng</th>' +
+        '<th>Số điện thoại</th>' +
+        '<th>Trạng thái</th>' +
+        '<th>BD phụ trách</th>' +
+        '<th>Zalo</th>' +
+        '<th>Doanh số dự kiến</th>' +
+        '<th>Ghi chú cuộc gọi</th>' +
+        '<th>Ghi chú khác</th>' +
+        '<th>Cập nhật gần nhất</th>' +
+      '</tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table>' +
+  '</div>';
+}
+
 function render() {
   const root = document.getElementById("app-root");
+
+  // Giữ nguyên vị trí cuộn của danh sách khi render lại.
+  const oldList = root.querySelector(".list, .table-wrap");
+  const previousListScrollTop = oldList ? oldList.scrollTop : 0;
+  const previousListScrollLeft = oldList ? oldList.scrollLeft : 0;
+
   if (state.loading || !state.leads) {
     root.innerHTML = '<div class="loading-wrap">' + icon("loader", 18, 'class="spin"') + " Đang tải dữ liệu...</div>";
     return;
@@ -576,6 +692,10 @@ function render() {
   const rowsHtml = list.length
     ? list.map(renderRow).join("")
     : '<div class="empty-state">Không có khách nào khớp bộ lọc.</div>';
+
+  const dataViewHtml = state.viewMode === "table"
+    ? renderTable(list)
+    : '<div class="list">' + rowsHtml + "</div>";
 
   root.innerHTML =
     '<div class="header">' +
@@ -600,10 +720,14 @@ function render() {
       '<select id="threshold-select">' +
         [12, 24, 48, 72].map((h) => '<option value="' + h + '"' + (state.thresholdHours === h ? " selected" : "") + '>Nhắc sau ' + h + "h</option>").join("") +
       "</select>" +
+      '<button class="btn-view ' + (state.viewMode === "table" ? "active" : "") + '" data-action="toggle-view">' +
+        icon(state.viewMode === "table" ? "list" : "table", 14) +
+        (state.viewMode === "table" ? " Danh sách" : " Dạng bảng") +
+      "</button>" +
       '<button class="btn-primary" data-action="open-add-modal">' + icon("plus", 14) + " Thêm khách</button>" +
     "</div>" +
     (state.error ? '<div class="error-banner">' + escapeHtml(state.error) + "</div>" : "") +
-    '<div class="list">' + rowsHtml + "</div>" +
+    dataViewHtml +
     '<div class="modal-overlay ' + (state.showAddModal ? "open" : "") + '" id="modal-overlay">' +
       '<div class="modal">' +
         '<div class="modal-head"><h3>Thêm khách mới</h3><button class="modal-close" data-action="close-add-modal">' + icon("x", 16) + "</button></div>" +
@@ -615,6 +739,13 @@ function render() {
     "</div>";
 
   attachDynamicListeners();
+
+  // Khôi phục vị trí cuộn sau khi toàn bộ innerHTML được dựng lại.
+  const newList = root.querySelector(".list, .table-wrap");
+  if (newList) {
+    newList.scrollTop = previousListScrollTop;
+    newList.scrollLeft = previousListScrollLeft;
+  }
 }
 
 function attachDynamicListeners() {
@@ -649,7 +780,32 @@ document.addEventListener("click", (e) => {
   const action = t.dataset.action;
   const id = t.dataset.id;
   if (action === "set-filter") { state.filter = t.dataset.filter; render(); }
-  else if (action === "toggle-expand") { state.expandedId = state.expandedId === id ? null : id; render(); }
+  else if (action === "toggle-view") {
+    state.viewMode = state.viewMode === "list" ? "table" : "list";
+    state.expandedId = null;
+    render();
+  }
+  else if (action === "toggle-expand") {
+    state.expandedId = state.expandedId === id ? null : id;
+    render();
+
+    // Nếu phần chi tiết vừa mở bị khuất, chỉ cuộn vừa đủ để giữ lead đang xem trong khung.
+    requestAnimationFrame(() => {
+      const trigger = document.querySelector('[data-action="toggle-expand"][data-id="' + id + '"]');
+      const row = trigger ? trigger.closest(".row") : null;
+      const list = document.querySelector(".list");
+      if (!row || !list) return;
+
+      const rowRect = row.getBoundingClientRect();
+      const listRect = list.getBoundingClientRect();
+
+      if (rowRect.bottom > listRect.bottom) {
+        list.scrollTop += rowRect.bottom - listRect.bottom + 12;
+      } else if (rowRect.top < listRect.top) {
+        list.scrollTop -= listRect.top - rowRect.top + 12;
+      }
+    });
+  }
   else if (action === "set-stage") { updateLead(id, { stage: t.dataset.stage }); }
   else if (action === "set-reason") { updateLead(id, { notPotentialReason: t.dataset.reason }); }
   else if (action === "delete") { deleteLead(id); }
