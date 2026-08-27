@@ -56,6 +56,12 @@
   }
   .btn-view:hover { background: #eff6ff; }
   .btn-view.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+  .btn-export {
+    display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+    background: #fff; color: #047857; border: 1px solid #a7f3d0;
+    padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+  }
+  .btn-export:hover { background: #ecfdf5; }
 
   .table-wrap {
     background: #fff;
@@ -245,6 +251,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const SUPABASE_URL = "https://dgnecbcbydpnjhukocjg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_93l7pGu7G_f0H69R3B10tQ_W0bSabqJ";
@@ -288,6 +295,7 @@ const ICONS = {
   circledashed: '<path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0M17.6 3.71a9.95 9.95 0 0 1 2.69 2.7M21.82 10.1a9.93 9.93 0 0 1 0 3.8M20.29 17.6a9.95 9.95 0 0 1-2.7 2.69M13.9 21.82a9.94 9.94 0 0 1-3.8 0M6.4 20.29a9.95 9.95 0 0 1-2.69-2.7M2.18 13.9a9.93 9.93 0 0 1 0-3.8M3.71 6.4a9.95 9.95 0 0 1 2.7-2.69"/>',
   table: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
   list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+  download: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
   loader: '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>',
 };
 function icon(name, size, extra) {
@@ -834,6 +842,71 @@ function startTableEdit(cell) {
   });
 }
 
+
+function exportExcel() {
+  try {
+    if (!window.XLSX) {
+      state.error = "Không tải được thư viện xuất Excel.";
+      render();
+      return;
+    }
+
+    // Xuất đúng danh sách đang được lọc/tìm kiếm trên màn hình.
+    const leads = filteredLeads();
+
+    if (!leads.length) {
+      state.error = "Không có dữ liệu để xuất Excel.";
+      render();
+      return;
+    }
+
+    const rows = leads.map((lead, index) => {
+      const st = statusOf(lead, state.now, state.thresholdHours);
+      const statusLabel = st === "overdue" ? "Trễ hạn" : STAGE_LABELS[lead.stage];
+
+      return {
+        "STT": lead.stt || index + 1,
+        "Ngày nhận": fmtFullDateTime(lead.time),
+        "Khách hàng": String(lead.name || "").trim(),
+        "Số điện thoại": normalizePhone(lead.phone),
+        "Trạng thái": statusLabel,
+        "BD phụ trách": lead.assignee || "Chưa phân công",
+        "Đã tư vấn Zalo": lead.zalo ? "Có" : "Không",
+        "Doanh số dự kiến": lead.revenue || "",
+        "Ghi chú cuộc gọi": lead.callNote || "",
+        "Ghi chú khác": lead.note || "",
+        "Lý do không tiềm năng": lead.notPotentialReason || "",
+        "Tiếp cận lần đầu": fmtFullDateTime(lead.firstContactAt),
+        "Cập nhật gần nhất": fmtFullDateTime(lead.updatedAt),
+      };
+    });
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    ws["!cols"] = [
+      { wch: 8 }, { wch: 18 }, { wch: 28 }, { wch: 16 }, { wch: 18 },
+      { wch: 18 }, { wch: 16 }, { wch: 18 }, { wch: 45 }, { wch: 35 },
+      { wch: 28 }, { wch: 20 }, { wch: 20 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Leads");
+
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
+
+    XLSX.writeFile(wb, "CNC_BD_Leads_" + y + m + d + "_" + hh + mm + ".xlsx");
+    state.error = "";
+  } catch (e) {
+    console.error("Export Excel error:", e);
+    state.error = "Xuất Excel thất bại.";
+    render();
+  }
+}
+
 function render() {
   const root = document.getElementById("app-root");
 
@@ -895,6 +968,7 @@ function render() {
         icon(state.viewMode === "table" ? "list" : "table", 14) +
         (state.viewMode === "table" ? " Danh sách" : " Dạng bảng") +
       "</button>" +
+      '<button class="btn-export" data-action="export-excel">' + icon("download", 14) + " Xuất Excel</button>" +
       '<button class="btn-primary" data-action="open-add-modal">' + icon("plus", 14) + " Thêm khách</button>" +
     "</div>" +
     (state.error ? '<div class="error-banner">' + escapeHtml(state.error) + "</div>" : "") +
@@ -951,6 +1025,7 @@ document.addEventListener("click", (e) => {
   const action = t.dataset.action;
   const id = t.dataset.id;
   if (action === "set-filter") { state.filter = t.dataset.filter; render(); }
+  else if (action === "export-excel") { exportExcel(); }
   else if (action === "toggle-view") {
     state.viewMode = state.viewMode === "list" ? "table" : "list";
     state.expandedId = null;
