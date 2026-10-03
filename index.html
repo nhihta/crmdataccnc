@@ -25,7 +25,15 @@
   .header h1 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
   .header .subtitle { font-size: 12px; color: #dbeafe; margin: 2px 0 0; }
   .save-status { font-size: 12px; color: #dbeafe; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .period-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; padding: 9px 10px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.16); border-radius: 12px; }
+  .period-copy { min-width: 0; }
+  .period-title { margin: 0; font-size: 12px; font-weight: 600; color: #fff; }
+  .period-subtitle { margin: 2px 0 0; font-size: 10.5px; color: #dbeafe; }
+  .period-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .month-input { min-width: 142px; border-color: rgba(255,255,255,0.45); color: #1e3a8a; font-weight: 600; }
+  .period-all-btn { border: 1px solid rgba(255,255,255,0.42); color: #fff; background: transparent; border-radius: 8px; padding: 8px 10px; font-size: 11px; cursor: pointer; }
+  .period-all-btn:hover, .period-all-btn.active { background: #fff; color: #1d4ed8; }
+  .stat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   .stat-card { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 12px; }
   .stat-label { font-size: 11px; color: #dbeafe; margin: 0; }
   .stat-value { font-size: 18px; font-weight: 600; margin: 2px 0 0; }
@@ -62,6 +70,8 @@
     padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap;
   }
   .btn-export:hover { background: #ecfdf5; }
+  .tab-count { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; margin-left: 4px; padding: 0 5px; border-radius: 999px; background: #dbeafe; color: #1d4ed8; font-size: 10px; }
+  .tab.active .tab-count { background: #2563eb; color: #fff; }
 
   .table-wrap {
     background: #fff;
@@ -238,6 +248,44 @@
   .loading-wrap { display: flex; align-items: center; justify-content: center; padding: 64px 0; color: #94a3b8; font-size: 13px; gap: 8px; }
   .spin { animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .ai-launcher { position: fixed; right: 22px; bottom: 22px; z-index: 40; display: flex; align-items: center; gap: 7px; border: none; border-radius: 999px; padding: 11px 16px; background: #111827; color: #fff; font-size: 12px; font-weight: 600; box-shadow: 0 12px 30px rgba(15,23,42,0.25); cursor: pointer; }
+  .ai-launcher:hover { background: #1e293b; transform: translateY(-1px); }
+  .ai-panel { position: fixed; right: 22px; bottom: 22px; z-index: 45; width: min(390px, calc(100vw - 28px)); height: min(610px, calc(100vh - 44px)); display: flex; flex-direction: column; background: #fff; border: 1px solid #dbeafe; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 70px rgba(15,23,42,0.28); }
+  .ai-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; color: #fff; background: linear-gradient(135deg,#1d4ed8,#2563eb); }
+  .ai-head h2 { margin: 0; font-size: 14px; }
+  .ai-head p { margin: 2px 0 0; font-size: 10.5px; color: #dbeafe; }
+  .ai-close { border: none; background: rgba(255,255,255,0.16); color: #fff; border-radius: 8px; padding: 6px; cursor: pointer; display: flex; }
+  .ai-messages { flex: 1; overflow-y: auto; padding: 14px; background: #f8fafc; }
+  .ai-welcome { border: 1px solid #dbeafe; border-radius: 12px; background: #eff6ff; color: #334155; padding: 11px 12px; font-size: 12px; line-height: 1.5; }
+  .ai-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .ai-suggestion { border: 1px solid #bfdbfe; background: #fff; color: #1d4ed8; border-radius: 999px; padding: 6px 9px; font-size: 10.5px; cursor: pointer; }
+  .ai-message { display: flex; margin: 10px 0; }
+  .ai-message.user { justify-content: flex-end; }
+  .ai-bubble { max-width: 88%; padding: 9px 11px; border-radius: 12px; font-size: 12px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .ai-message.user .ai-bubble { background: #2563eb; color: #fff; border-bottom-right-radius: 4px; }
+  .ai-message.assistant .ai-bubble { background: #fff; color: #334155; border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; }
+  .ai-thinking { color: #64748b; font-style: italic; }
+  .ai-error { margin: 0 14px 8px; padding: 8px 10px; border-radius: 8px; background: #fef2f2; color: #b91c1c; font-size: 11px; }
+  .ai-form { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #e2e8f0; background: #fff; }
+  .ai-input { flex: 1; min-width: 0; border: 1px solid #bfdbfe; border-radius: 10px; padding: 9px 10px; font: inherit; font-size: 12px; resize: none; min-height: 39px; max-height: 92px; }
+  .ai-input:focus { outline: none; box-shadow: 0 0 0 2px #93c5fd; }
+  .ai-send { align-self: flex-end; border: none; border-radius: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #2563eb; color: #fff; cursor: pointer; }
+  .ai-send:disabled { cursor: not-allowed; opacity: 0.55; }
+
+  @media (max-width: 980px) {
+    .stat-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .app { width: 100%; padding: 0; }
+    .card { border-radius: 0; }
+    .period-bar { align-items: flex-start; flex-direction: column; }
+    .period-controls { width: 100%; }
+    .month-input { flex: 1; min-width: 0; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .ai-panel { right: 8px; bottom: 8px; width: calc(100vw - 16px); height: calc(100vh - 16px); }
+    .ai-launcher { right: 14px; bottom: 14px; }
+  }
 </style>
 </head>
 <body>
@@ -296,10 +344,24 @@ const ICONS = {
   table: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
   list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
   download: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
+  bot: '<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="8.5" cy="16" r="1"/><circle cx="15.5" cy="16" r="1"/><path d="M12 2v4M8 7h8"/>',
+  send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
   loader: '<path d="M21 12a9 9 0 1 1-6.219-8.56"/>',
 };
 function icon(name, size, extra) {
   return '<svg width="' + (size||14) + '" height="' + (size||14) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' + (extra||'') + '>' + ICONS[name] + '</svg>';
+}
+
+function localMonthKey(value) {
+  const d = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+}
+
+function monthLabel(monthKey) {
+  if (!monthKey) return "Tất cả thời gian";
+  const parts = monthKey.split("-");
+  return "Tháng " + Number(parts[1]) + "/" + parts[0];
 }
 
 let state = {
@@ -308,6 +370,7 @@ let state = {
   saving: false,
   now: Date.now(),
   filter: "all",
+  monthFilter: localMonthKey(new Date()),
   query: "",
   assigneeFilter: "all",
   thresholdHours: 24,
@@ -316,6 +379,11 @@ let state = {
   showAddModal: false,
   newLead: { name: "", phone: "", assignee: "Chưa phân công" },
   error: "",
+  aiOpen: false,
+  aiLoading: false,
+  aiError: "",
+  aiDraft: "",
+  aiMessages: [],
   viewMode: (window.matchMedia && window.matchMedia("(max-width: 767px)").matches) ? "list" : "table",
 };
 
@@ -572,25 +640,36 @@ function copyPhone(id, phone) {
   setTimeout(() => { if (state.copiedId === id) { state.copiedId = null; render(); } }, 1500);
 }
 
+function leadsInSelectedMonth() {
+  if (!state.monthFilter) return state.leads;
+  return state.leads.filter((lead) => localMonthKey(lead.time) === state.monthFilter);
+}
+
 function computeStats() {
-  const leads = state.leads;
+  const leads = leadsInSelectedMonth();
   const now = state.now, th = state.thresholdHours;
   const withStatus = leads.map((l) => statusOf(l, now, th));
   const total = leads.length;
   const overdue = withStatus.filter((s) => s === "overdue").length;
-  const contacted = leads.filter((l) => l.stage !== "new").length;
+  const newCount = withStatus.filter((s) => s === "new").length;
+  const contacted = withStatus.filter((s) => s === "contacted").length;
+  const reached = leads.filter((l) => l.stage !== "new").length;
   const potential = withStatus.filter((s) => s === "potential").length;
   const notPotential = withStatus.filter((s) => s === "not_potential").length;
   const judged = potential + notPotential;
   const potentialRate = judged ? Math.round((potential / judged) * 100) : 0;
-  const contactRate = total ? Math.round((contacted / total) * 100) : 0;
+  const contactRate = total ? Math.round((reached / total) * 100) : 0;
   const stalePotential = leads.filter((l) => isStalePotential(l, now)).length;
-  return { total, overdue, contacted, potential, notPotential, judged, potentialRate, contactRate, stalePotential };
+  return {
+    total, overdue, newCount, contacted, reached, potential, notPotential, judged,
+    potentialRate, contactRate, stalePotential,
+    byStatus: { all: total, overdue, new: newCount, contacted, potential, not_potential: notPotential },
+  };
 }
 
 function filteredLeads() {
   const q = state.query.trim().toLowerCase();
-  return state.leads
+  return leadsInSelectedMonth()
     .filter((l) => {
       const st = statusOf(l, state.now, state.thresholdHours);
       if (state.filter !== "all" && st !== state.filter) return false;
@@ -907,6 +986,165 @@ function exportExcel() {
   }
 }
 
+function renderAiHtml() {
+  if (!state.aiOpen) {
+    return '<button class="ai-launcher" data-action="open-ai">' + icon("bot", 17) + " Hỏi AI về CRM</button>";
+  }
+
+  const messages = state.aiMessages.map((message, index) =>
+    '<div class="ai-message ' + escapeHtml(message.role) + '"><div class="ai-bubble" data-ai-message-index="' + index + '">' +
+      (message.content ? escapeHtml(message.content) : '<span class="ai-thinking">Đang phân tích dữ liệu...</span>') +
+    "</div></div>"
+  ).join("");
+
+  const welcome = state.aiMessages.length ? "" :
+    '<div class="ai-welcome">Tôi có thể phân tích dữ liệu <b>' + escapeHtml(monthLabel(state.monthFilter)) +
+    '</b>. Số điện thoại không được gửi sang AI.' +
+      '<div class="ai-suggestions">' +
+        '<button class="ai-suggestion" data-action="ai-suggestion" data-question="Tóm tắt tình hình tháng này và việc cần ưu tiên">Tóm tắt tháng</button>' +
+        '<button class="ai-suggestion" data-action="ai-suggestion" data-question="Khách tiềm năng nào cần follow-up trước?">Ưu tiên follow-up</button>' +
+        '<button class="ai-suggestion" data-action="ai-suggestion" data-question="Đánh giá hiệu quả của từng BD trong tháng">Hiệu quả BD</button>' +
+      "</div>" +
+    "</div>";
+
+  return '<section class="ai-panel" aria-label="Trợ lý AI CRM">' +
+    '<div class="ai-head"><div><h2>Trợ lý AI CRM</h2><p>DeepSeek · ' + escapeHtml(monthLabel(state.monthFilter)) + '</p></div>' +
+      '<button class="ai-close" data-action="close-ai" aria-label="Đóng">' + icon("x", 16) + "</button></div>" +
+    '<div class="ai-messages" id="ai-messages">' + welcome + messages + "</div>" +
+    (state.aiError ? '<div class="ai-error">' + escapeHtml(state.aiError) + "</div>" : "") +
+    '<div class="ai-form"><textarea class="ai-input" id="ai-input" rows="1" placeholder="Ví dụ: Tháng này có bao nhiêu khách tiềm năng?"' + (state.aiLoading ? " disabled" : "") + ">" + escapeHtml(state.aiDraft) + "</textarea>" +
+      '<button class="ai-send" data-action="send-ai" aria-label="Gửi câu hỏi"' + (state.aiLoading ? " disabled" : "") + ">" + (state.aiLoading ? icon("loader", 16, 'class="spin"') : icon("send", 16)) + "</button>" +
+    "</div>" +
+  "</section>";
+}
+
+function aiContext() {
+  const stats = computeStats();
+  const scopedLeads = leadsInSelectedMonth()
+    .slice()
+    .sort((a, b) => new Date(b.time) - new Date(a.time));
+  const leads = scopedLeads
+    .slice(0, 120)
+    .map((lead) => ({
+      name: String(lead.name || "").trim(),
+      receivedAt: lead.time,
+      status: statusOf(lead, state.now, state.thresholdHours) === "overdue" ? "Trễ hạn" : STAGE_LABELS[lead.stage],
+      assignee: lead.assignee || "Chưa phân công",
+      revenue: lead.revenue || "",
+      callNote: String(lead.callNote || "").slice(0, 250),
+      note: String(lead.note || "").slice(0, 250),
+      updatedAt: lead.updatedAt,
+    }));
+
+  return {
+    period: monthLabel(state.monthFilter),
+    generatedAt: new Date().toISOString(),
+    reminderThresholdHours: state.thresholdHours,
+    stats: {
+      total: stats.total,
+      overdue: stats.overdue,
+      new: stats.newCount,
+      contacted: stats.contacted,
+      reached: stats.reached,
+      potential: stats.potential,
+      notPotential: stats.notPotential,
+      contactRate: stats.contactRate,
+      potentialRate: stats.potentialRate,
+    },
+    leads,
+    leadCoverage: {
+      included: leads.length,
+      total: scopedLeads.length,
+      rule: "Tối đa 120 khách mới nhất trong kỳ; số thống kê luôn tính trên toàn bộ khách trong kỳ.",
+    },
+    privacy: "Số điện thoại đã được loại khỏi dữ liệu gửi sang AI.",
+  };
+}
+
+function scrollAiToBottom() {
+  const box = document.getElementById("ai-messages");
+  if (box) box.scrollTop = box.scrollHeight;
+}
+
+async function sendAiQuestion(questionOverride) {
+  const question = String(questionOverride || state.aiDraft || "").trim();
+  if (!question || state.aiLoading) return;
+
+  state.aiDraft = "";
+  state.aiError = "";
+  state.aiLoading = true;
+  state.aiMessages.push({ role: "user", content: question });
+  state.aiMessages.push({ role: "assistant", content: "" });
+  const assistantIndex = state.aiMessages.length - 1;
+  render();
+  requestAnimationFrame(scrollAiToBottom);
+
+  try {
+    const response = await fetch(SUPABASE_URL + "/functions/v1/crm-ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+      },
+      body: JSON.stringify({
+        messages: state.aiMessages.filter((message) => message.content).slice(-8),
+        context: aiContext(),
+      }),
+    });
+
+    if (!response.ok) {
+      let message = "AI chưa sẵn sàng. Hãy kiểm tra Edge Function và secret DeepSeek.";
+      try {
+        const payload = await response.json();
+        if (payload && payload.error) message = payload.error;
+      } catch (e) {}
+      throw new Error(message);
+    }
+    if (!response.body) throw new Error("Trình duyệt không nhận được luồng trả lời từ AI.");
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let done = false;
+
+    while (!done) {
+      const chunk = await reader.read();
+      done = chunk.done;
+      buffer += decoder.decode(chunk.value || new Uint8Array(), { stream: !done });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line.startsWith("data:")) continue;
+        const data = line.slice(5).trim();
+        if (!data || data === "[DONE]") continue;
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.choices?.[0]?.delta?.content || "";
+          if (!text) continue;
+          state.aiMessages[assistantIndex].content += text;
+          const bubble = document.querySelector('[data-ai-message-index="' + assistantIndex + '"]');
+          if (bubble) bubble.textContent = state.aiMessages[assistantIndex].content;
+          scrollAiToBottom();
+        } catch (e) {}
+      }
+    }
+
+    if (!state.aiMessages[assistantIndex].content) {
+      throw new Error("AI không trả về nội dung.");
+    }
+  } catch (error) {
+    console.error("CRM AI error:", error);
+    if (!state.aiMessages[assistantIndex].content) state.aiMessages.splice(assistantIndex, 1);
+    state.aiError = error && error.message ? error.message : "Không thể kết nối tới AI.";
+  } finally {
+    state.aiLoading = false;
+    render();
+    requestAnimationFrame(scrollAiToBottom);
+  }
+}
+
 function render() {
   const root = document.getElementById("app-root");
 
@@ -926,7 +1164,7 @@ function render() {
   const tabs = [
     ["all", "Tất cả"], ["overdue", "Trễ hạn"], ["new", "Chưa tiếp cận"],
     ["contacted", "Đã tiếp cận"], ["potential", "Tiềm năng"], ["not_potential", "Không tiềm năng"],
-  ].map(([key, label]) => '<button class="tab ' + (state.filter === key ? "active" : "") + '" data-action="set-filter" data-filter="' + key + '">' + label + "</button>").join("");
+  ].map(([key, label]) => '<button class="tab ' + (state.filter === key ? "active" : "") + '" data-action="set-filter" data-filter="' + key + '">' + label + '<span class="tab-count">' + stats.byStatus[key] + "</span></button>").join("");
 
   const staleBanner = stats.stalePotential > 0
     ? '<div class="stale-banner">' + icon("clock", 13) + stats.stalePotential + " khách tiềm năng chưa cập nhật quá " + STALE_POTENTIAL_HOURS + "h — nên follow-up trước khi nguội.</div>"
@@ -946,9 +1184,16 @@ function render() {
         '<div><h1>CNC · Theo dõi cuộc gọi BD</h1><p class="subtitle">Khách để lại SĐT trên Facebook · dữ liệu dùng chung cả team</p></div>' +
         '<div class="save-status">' + (state.saving ? icon("loader", 12, 'class="spin"') + " Đang lưu" : icon("check", 12) + " Đã lưu") + "</div>" +
       "</div>" +
+      '<div class="period-bar">' +
+        '<div class="period-copy"><p class="period-title">' + escapeHtml(monthLabel(state.monthFilter)) + '</p><p class="period-subtitle">Số liệu và trạng thái bên dưới đang tính theo kỳ này</p></div>' +
+        '<div class="period-controls"><input class="month-input" id="month-filter" type="month" value="' + escapeHtml(state.monthFilter) + '" />' +
+          '<button class="period-all-btn ' + (!state.monthFilter ? "active" : "") + '" data-action="all-months">Tất cả tháng</button></div>' +
+      "</div>" +
       '<div class="stat-grid">' +
         '<div class="stat-card"><p class="stat-label">Tổng số</p><p class="stat-value">' + stats.total + "</p></div>" +
         '<div class="stat-card"><p class="stat-label">Trễ hạn</p><p class="stat-value">' + stats.overdue + "</p></div>" +
+        '<div class="stat-card"><p class="stat-label">Chưa tiếp cận</p><p class="stat-value">' + stats.newCount + "</p></div>" +
+        '<div class="stat-card"><p class="stat-label">Đã tiếp cận</p><p class="stat-value">' + stats.contacted + "</p></div>" +
         '<div class="stat-card"><p class="stat-label">Tiềm năng</p><p class="stat-value">' + stats.potential + "</p></div>" +
         '<div class="stat-card"><p class="stat-label">Không tiềm năng</p><p class="stat-value">' + stats.notPotential + "</p></div>" +
       "</div>" +
@@ -981,7 +1226,8 @@ function render() {
         '<div class="modal-field"><label class="field-label">Phân công</label><select id="new-assignee" style="width:100%;margin-top:4px;">' + optionsHtml(ASSIGNEES, state.newLead.assignee) + "</select></div>" +
         '<button class="modal-submit" data-action="submit-add">' + icon("plus", 15) + " Thêm vào danh sách</button>" +
       "</div>" +
-    "</div>";
+    "</div>" +
+    renderAiHtml();
 
   attachDynamicListeners();
 
@@ -1000,14 +1246,34 @@ function attachDynamicListeners() {
   }
   const assigneeFilter = document.getElementById("assignee-filter");
   if (assigneeFilter) assigneeFilter.onchange = (e) => { state.assigneeFilter = e.target.value; render(); };
+  const monthFilter = document.getElementById("month-filter");
+  if (monthFilter) monthFilter.onchange = (e) => {
+    state.monthFilter = e.target.value;
+    state.filter = "all";
+    state.aiMessages = [];
+    state.aiError = "";
+    render();
+  };
   const thresholdSelect = document.getElementById("threshold-select");
   if (thresholdSelect) thresholdSelect.onchange = (e) => { state.thresholdHours = Number(e.target.value); render(); };
+  const aiInput = document.getElementById("ai-input");
+  if (aiInput) {
+    aiInput.oninput = (e) => { state.aiDraft = e.target.value; };
+    aiInput.onkeydown = (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        state.aiDraft = e.target.value;
+        sendAiQuestion();
+      }
+    };
+  }
   const newName = document.getElementById("new-name");
   if (newName) newName.oninput = (e) => { state.newLead.name = e.target.value; };
   const newPhone = document.getElementById("new-phone");
   if (newPhone) newPhone.oninput = (e) => { state.newLead.phone = e.target.value; };
   const newAssignee = document.getElementById("new-assignee");
   if (newAssignee) newAssignee.onchange = (e) => { state.newLead.assignee = e.target.value; };
+  if (state.aiOpen && state.aiMessages.length) requestAnimationFrame(scrollAiToBottom);
 }
 
 function renderListOnly() {
@@ -1025,6 +1291,17 @@ document.addEventListener("click", (e) => {
   const action = t.dataset.action;
   const id = t.dataset.id;
   if (action === "set-filter") { state.filter = t.dataset.filter; render(); }
+  else if (action === "all-months") {
+    state.monthFilter = "";
+    state.filter = "all";
+    state.aiMessages = [];
+    state.aiError = "";
+    render();
+  }
+  else if (action === "open-ai") { state.aiOpen = true; render(); }
+  else if (action === "close-ai") { state.aiOpen = false; render(); }
+  else if (action === "ai-suggestion") { sendAiQuestion(t.dataset.question); }
+  else if (action === "send-ai") { sendAiQuestion(); }
   else if (action === "export-excel") { exportExcel(); }
   else if (action === "toggle-view") {
     state.viewMode = state.viewMode === "list" ? "table" : "list";

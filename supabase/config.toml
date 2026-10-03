@@ -1,0 +1,5 @@
+project_id = "crmdataccnc"
+
+[functions.crm-ai]
+verify_jwt = false
+
